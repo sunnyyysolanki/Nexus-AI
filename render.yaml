@@ -25,7 +25,7 @@ services:
       - key: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
         value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
       - key: KAFKA_CONTROLLER_QUORUM_VOTERS
-        value: "1@nexus-kafka:9093"
+        value: "1@127.0.0.1:9093"
       - key: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
         value: "1"
       - key: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
@@ -34,6 +34,8 @@ services:
         value: "1"
       - key: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
         value: "0"
+      - key: CLUSTER_ID
+        value: "NEXUS_KAFKA_CLUSTER_00"
 
   # -------------------------------------------------------------
   # 2. Kafka UI Dashboard
