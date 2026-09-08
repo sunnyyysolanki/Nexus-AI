@@ -24,7 +24,7 @@ Add the Nexus enterprise repository to your microservice's `pom.xml`:
     <repository>
         <id>nexus-releases</id>
         <name>Nexus Enterprise Releases</name>
-        <url>http://localhost:8081/repository/maven-releases/</url>
+        <url>http://localhost:8088/repository/maven-releases/</url>
     </repository>
 </repositories>
 ```

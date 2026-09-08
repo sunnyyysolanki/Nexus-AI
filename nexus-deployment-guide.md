@@ -6,9 +6,9 @@ This document outlines all the exact steps, terminal commands, REST API calls, a
 
 ## 📌 Executive Summary
 * **Service Name**: `SonatypeNexusRepository` (Windows Service)
-* **Nexus URL**: `http://localhost:8081`
+* **Nexus URL**: `http://localhost:8088`
 * **Admin Credentials**: User `admin` | Password `22e3a14b-89a8-48e6-88f7-c8ad92c84da7`
-* **Target Repository**: `http://localhost:8081/repository/maven-releases/`
+* **Target Repository**: `http://localhost:8088/repository/maven-releases/`
 * **Published Artifact**: `com.nexus:nexus-spring-boot-starter:1.0.0`
 
 ---
