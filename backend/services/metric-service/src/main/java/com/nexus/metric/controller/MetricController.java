@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1/metrics")
 @RequiredArgsConstructor
 public class MetricController {

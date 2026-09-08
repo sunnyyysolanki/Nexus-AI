@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '../api/client';
+import axios from 'axios';
 
 export interface ServiceHealthStatus {
   gateway: boolean;
@@ -11,8 +11,9 @@ export interface ServiceHealthStatus {
 }
 
 const checkService = async (url: string): Promise<boolean> => {
+  if (!url) return false;
   try {
-    const res = await apiClient.get(url, { timeout: 2500, validateStatus: () => true });
+    const res = await axios.get(url, { timeout: 2500, validateStatus: () => true });
     // Any HTTP response between 200 and 499 (including 405 Method Not Allowed or 404)
     // indicates that the backend process is running and actively responding to HTTP.
     return res.status >= 200 && res.status < 500;
@@ -27,14 +28,14 @@ export function useServiceHealth() {
     queryFn: async () => {
       const now = new Date().toISOString();
 
-      // Probe all microservices through the API Gateway routing paths
+      // Probe each microservice independently using their public URLs
       const [gatewayOk, alertOk, incidentOk, rcaOk, logOk, metricOk] = await Promise.all([
-        checkService('/incidents'), // Using incident route as a Gateway ping
-        checkService('/alerts'), 
-        checkService('/incidents'), 
-        checkService('/rca/generate'), 
-        checkService(`/logs/search?serviceName=ping&from=${now}&to=${now}`), 
-        checkService(`/metrics/query?serviceName=ping&from=${now}&to=${now}`), 
+        checkService(`${import.meta.env.VITE_GATEWAY_URL || ''}/api/v1/incidents`), 
+        checkService(`${import.meta.env.VITE_ALERT_SERVICE_URL || ''}/api/v1/alerts`), 
+        checkService(`${import.meta.env.VITE_INCIDENT_SERVICE_URL || ''}/api/v1/incidents`), 
+        checkService(`${import.meta.env.VITE_RCA_SERVICE_URL || ''}/api/v1/rca/generate`), 
+        checkService(`${import.meta.env.VITE_LOG_SERVICE_URL || ''}/api/v1/logs/search?serviceName=ping&from=${now}&to=${now}`), 
+        checkService(`${import.meta.env.VITE_METRIC_SERVICE_URL || ''}/api/v1/metrics/query?serviceName=ping&from=${now}&to=${now}`), 
       ]);
 
       return {
