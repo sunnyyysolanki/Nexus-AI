@@ -59,7 +59,8 @@ services:
     name: log-service
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/log-service/Dockerfile
+    rootDir: backend/services/log-service
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -83,7 +84,8 @@ services:
     name: metric-service
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/metric-service/Dockerfile
+    rootDir: backend/services/metric-service
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -107,7 +109,8 @@ services:
     name: rca-service
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/rca-service/Dockerfile
+    rootDir: backend/services/rca-service
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -131,7 +134,8 @@ services:
     name: incident-service
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/incident-service/Dockerfile
+    rootDir: backend/services/incident-service
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -155,7 +159,8 @@ services:
     name: alert-service
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/alert-service/Dockerfile
+    rootDir: backend/services/alert-service
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -179,7 +184,8 @@ services:
     name: api-gateway
     plan: free
     runtime: docker
-    dockerfilePath: backend/services/api-gateway/Dockerfile
+    rootDir: backend/services/api-gateway
+    dockerfilePath: Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
