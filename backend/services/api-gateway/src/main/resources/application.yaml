@@ -1,0 +1,46 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Route 1: Alert Ingestion -> alert-service (Port 8083)
+            - id: alert-service-route
+              uri: ${ALERT_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/v1/alerts/**
+                - Method=GET,POST,PUT
+
+            # Route 2: Incident Management -> incident-service (Port 8084)
+            - id: incident-service-route
+              uri: ${INCIDENT_SERVICE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/v1/incidents/**
+                - Method=GET,POST,PUT,DELETE
+
+            # Route 3: Log Ingestion & Search -> log-service (Port 8081)
+            - id: log-service-route
+              uri: ${LOG_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/logs/**
+                - Method=GET,POST
+
+            # Route 4: Metric Ingestion & Query -> metric-service (Port 8082)
+            - id: metric-service-route
+              uri: ${METRIC_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/metrics/**
+                - Method=GET,POST
+
+            # Route 5: AI RCA Generation -> rca-service (Port 8085)
+            - id: rca-service-route
+              uri: ${RCA_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/v1/rca/**
+                - Method=GET,POST

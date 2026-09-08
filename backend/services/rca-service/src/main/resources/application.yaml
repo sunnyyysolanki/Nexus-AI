@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: rca-service
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/nexus_rca_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Assassin@s4u}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    properties:
+      spring.json.trusted.packages: "*"
+      spring.json.type.mapping: "RcaRequest:com.nexus.rca_service.dto.RcaRequest,RcaResponse:com.nexus.rca_service.dto.RcaResponse,com.nexus.incident.dto.RcaRequest:com.nexus.rca_service.dto.RcaRequest"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: rca-group-v4
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+  ai:
+    openai:
+      base-url: ${AI_BASE_URL:http://localhost:11434/v1}
+      api-key: ${AI_API_KEY:ollama}
+      chat:
+        model: ${AI_MODEL:minicpm-v4.6}
+        temperature: 0.2
+      embedding:
+        base-url: ${AI_BASE_URL:http://localhost:11434/v1}
+        api-key: ${AI_API_KEY:ollama}
+        model: ${AI_EMBEDDING_MODEL:nomic-embed-text}
+
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        index-type: HNSW
+
+server:
+  port: ${PORT:8085}
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG

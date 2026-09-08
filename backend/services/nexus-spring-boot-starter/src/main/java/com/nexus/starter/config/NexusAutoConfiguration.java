@@ -1,0 +1,58 @@
+package com.nexus.starter.config;
+
+import com.nexus.starter.exception.NexusExceptionHandler;
+import com.nexus.starter.publisher.NexusMetricsPublisher;
+import io.micrometer.core.instrument.MeterRegistry;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
+
+@Slf4j
+@AutoConfiguration
+@EnableScheduling
+@EnableConfigurationProperties(NexusProperties.class)
+@ConditionalOnProperty(prefix = "nexus", name = "enabled", havingValue = "true", matchIfMissing = true)
+public class NexusAutoConfiguration {
+
+    @Bean(name = "nexusExecutor")
+    @ConditionalOnMissingBean(name = "nexusExecutor")
+    public Executor nexusExecutor() {
+        log.info("⚡ [Nexus Starter] Registering Isolated ThreadPool (nexusExecutor)");
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(4);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("nexus-telemetry-");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
+        executor.initialize();
+        return executor;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public NexusMetricsPublisher nexusMetricsPublisher(
+            MeterRegistry meterRegistry, 
+            NexusProperties properties,
+            @Qualifier("nexusExecutor") Executor nexusExecutor) {
+        log.info("⚡ [Nexus Starter] Registering NexusMetricsPublisher Bean with isolated Executor");
+        return new NexusMetricsPublisher(meterRegistry, properties, nexusExecutor);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public NexusExceptionHandler nexusExceptionHandler(
+            NexusProperties properties,
+            @Qualifier("nexusExecutor") Executor nexusExecutor) {
+        log.info("⚡ [Nexus Starter] Registering NexusExceptionHandler Bean with isolated Executor");
+        return new NexusExceptionHandler(properties, nexusExecutor);
+    }
+}

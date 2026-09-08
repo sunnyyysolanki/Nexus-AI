@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: metric-service
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nexus_metric_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Assassin@s4u}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: ${PORT:8082}

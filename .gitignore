@@ -1,0 +1,32 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Node / Frontend build
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Java / Maven / Gradle build outputs
+target/
+build/
+out/
+bin/
+*.class
+*.jar
+*.war
+
+# Logs and OS files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
