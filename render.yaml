@@ -60,7 +60,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/log-service
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/log-service
+    dockerfilePath: backend/services/log-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -85,7 +86,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/metric-service
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/metric-service
+    dockerfilePath: backend/services/metric-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -110,7 +112,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/rca-service
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/rca-service
+    dockerfilePath: backend/services/rca-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -135,7 +138,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/incident-service
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/incident-service
+    dockerfilePath: backend/services/incident-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -160,7 +164,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/alert-service
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/alert-service
+    dockerfilePath: backend/services/alert-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -185,7 +190,8 @@ services:
     plan: free
     runtime: docker
     rootDir: backend/services/api-gateway
-    dockerfilePath: Dockerfile
+    dockerContext: backend/services/api-gateway
+    dockerfilePath: backend/services/api-gateway/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
