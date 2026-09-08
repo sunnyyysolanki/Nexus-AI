@@ -14,7 +14,11 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class NexusExceptionHandler {
 
