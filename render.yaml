@@ -8,7 +8,8 @@ services:
   - type: pserv
     name: nexus-kafka
     env: docker
-    image: apache/kafka:latest
+    image:
+      url: apache/kafka:latest
     envVars:
       - key: KAFKA_NODE_ID
         value: "1"
@@ -39,7 +40,8 @@ services:
   - type: web
     name: nexus-kafka-ui
     env: docker
-    image: provectuslabs/kafka-ui:latest
+    image:
+      url: provectuslabs/kafka-ui:latest
     envVars:
       - key: SERVER_PORT
         value: "8080"
