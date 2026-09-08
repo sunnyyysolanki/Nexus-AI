@@ -1,58 +1,70 @@
 # Render Blueprint Specification for NEXUS AI Infrastructure
 # Docs: https://render.com/docs/blueprint-spec
 
-services:
-  # -------------------------------------------------------------
-  # 1. Apache Kafka (Web Service on Free Plan)
-  # -------------------------------------------------------------
-  - type: web
-    name: nexus-kafka
-    plan: free
-    runtime: image
-    image:
-      url: apache/kafka:latest
+envGroups:
+  - name: upstash-kafka
     envVars:
-      - key: KAFKA_NODE_ID
-        value: "1"
-      - key: KAFKA_PROCESS_ROLES
-        value: "broker,controller"
-      - key: KAFKA_LISTENERS
-        value: "PLAINTEXT://:9092,CONTROLLER://:9093"
-      - key: KAFKA_ADVERTISED_LISTENERS
-        value: "PLAINTEXT://nexus-kafka:9092"
-      - key: KAFKA_CONTROLLER_LISTENER_NAMES
-        value: "CONTROLLER"
-      - key: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-        value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
-      - key: KAFKA_CONTROLLER_QUORUM_VOTERS
-        value: "1@127.0.0.1:9093"
-      - key: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
-        value: "1"
-      - key: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
-        value: "1"
-      - key: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
-        value: "1"
-      - key: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
-        value: "0"
-      - key: CLUSTER_ID
-        value: "NEXUS_KAFKA_CLUSTER_00"
+      - key: KAFKA_SERVERS
+        sync: false
+      - key: KAFKA_SECURITY_PROTOCOL
+        value: "SASL_SSL"
+      - key: KAFKA_SASL_MECHANISM
+        value: "SCRAM-SHA-256"
+      - key: KAFKA_JAAS_CONFIG
+        sync: false
 
-  # -------------------------------------------------------------
-  # 2. Kafka UI Dashboard
-  # -------------------------------------------------------------
-  - type: web
-    name: nexus-kafka-ui
-    plan: free
-    runtime: image
-    image:
-      url: provectuslabs/kafka-ui:latest
-    envVars:
-      - key: SERVER_PORT
-        value: "8080"
-      - key: KAFKA_CLUSTERS_0_NAME
-        value: nexus-cluster
-      - key: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-        value: "nexus-kafka:9092"
+services:
+  # # -------------------------------------------------------------
+  # # 1. Apache Kafka (Web Service on Free Plan)
+  # # -------------------------------------------------------------
+  # - type: web
+  #   name: nexus-kafka
+  #   plan: free
+  #   runtime: image
+  #   image:
+  #     url: apache/kafka:latest
+  #   envVars:
+  #     - key: KAFKA_NODE_ID
+  #       value: "1"
+  #     - key: KAFKA_PROCESS_ROLES
+  #       value: "broker,controller"
+  #     - key: KAFKA_LISTENERS
+  #       value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+  #     - key: KAFKA_ADVERTISED_LISTENERS
+  #       value: "PLAINTEXT://nexus-kafka:9092"
+  #     - key: KAFKA_CONTROLLER_LISTENER_NAMES
+  #       value: "CONTROLLER"
+  #     - key: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+  #       value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+  #     - key: KAFKA_CONTROLLER_QUORUM_VOTERS
+  #       value: "1@127.0.0.1:9093"
+  #     - key: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+  #       value: "1"
+  #     - key: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+  #       value: "1"
+  #     - key: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+  #       value: "1"
+  #     - key: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+  #       value: "0"
+  #     - key: CLUSTER_ID
+  #       value: "NEXUS_KAFKA_CLUSTER_00"
+
+  # # -------------------------------------------------------------
+  # # 2. Kafka UI Dashboard
+  # # -------------------------------------------------------------
+  # - type: web
+  #   name: nexus-kafka-ui
+  #   plan: free
+  #   runtime: image
+  #   image:
+  #     url: provectuslabs/kafka-ui:latest
+  #   envVars:
+  #     - key: SERVER_PORT
+  #       value: "8080"
+  #     - key: KAFKA_CLUSTERS_0_NAME
+  #       value: nexus-cluster
+  #     - key: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+  #       value: "nexus-kafka:9092"
 
   # -------------------------------------------------------------
   # 3. Log Service Microservice
@@ -129,6 +141,8 @@ services:
     runtime: docker
     rootDir: backend/services/rca-service
     dockerfilePath: Dockerfile
+    envGroups:
+      - upstash-kafka
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -162,6 +176,8 @@ services:
     runtime: docker
     rootDir: backend/services/incident-service
     dockerfilePath: Dockerfile
+    envGroups:
+      - upstash-kafka
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod

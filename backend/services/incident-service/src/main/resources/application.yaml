@@ -16,9 +16,13 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
     properties:
-      spring.json.trusted.packages: "*"
+      spring.json.trusted.packages: "com.nexus.*"
       spring.json.type.mapping: "RcaRequest:com.nexus.incident.dto.RcaRequest,RcaResponse:com.nexus.incident.dto.RcaResponse,IncidentCreatedEvent:com.nexus.incident.event.IncidentCreatedEvent,com.nexus.rca_service.dto.RcaResponse:com.nexus.incident.dto.RcaResponse"
+      security.protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+      sasl.mechanism: ${KAFKA_SASL_MECHANISM:}
+      sasl.jaas.config: ${KAFKA_JAAS_CONFIG:}
     producer:
+      acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
