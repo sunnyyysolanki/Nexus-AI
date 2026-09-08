@@ -2,7 +2,7 @@
 # Docs: https://render.com/docs/blueprint-spec
 
 envGroups:
-  - name: upstash-kafka
+  - name: cloud-kafka
     envVars:
       - key: KAFKA_SERVERS
         sync: false
@@ -142,7 +142,7 @@ services:
     rootDir: backend/services/rca-service
     dockerfilePath: Dockerfile
     envGroups:
-      - upstash-kafka
+      - cloud-kafka
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -177,7 +177,7 @@ services:
     rootDir: backend/services/incident-service
     dockerfilePath: Dockerfile
     envGroups:
-      - upstash-kafka
+      - cloud-kafka
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
