@@ -96,12 +96,13 @@ public class RcaService {
                 .builder()
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
                         .vectorStore(vectorStore)
-                        .topK(1)
-                        .similarityThreshold(0.8)
+                        .topK(2)
+                        .similarityThreshold(0.75)
                         .build())
                 .documentJoiner(new ConcatenationDocumentJoiner())
                 .queryAugmenter(ContextualQueryAugmenter.builder().allowEmptyContext(true).build())
                 .build();
+                
 
         RcaResponse rawResponse = chatClient
                 .prompt()
