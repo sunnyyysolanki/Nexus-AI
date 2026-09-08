@@ -10,6 +10,7 @@ This document consolidates key architectural decisions, deep Java concurrency co
 3. [Concurrency in SDKs: Why Avoid `ForkJoinPool.commonPool()`?](#3-concurrency-in-sdks-why-avoid-forkjoinpoolcommonpool)
 4. [Java `Executor` Interface & Thread Pool Anatomy](#4-java-executor-interface--thread-pool-anatomy)
 5. [Thread Pool Rejection Policies & `DiscardOldestPolicy`](#5-thread-pool-rejection-policies--discardoldestpolicy)
+6. [@Order Annotation & Exception Handler Precedence](#6-order-annotation--exception-handler-precedence)
 
 ---
 
@@ -151,3 +152,63 @@ When a thread pool's worker threads are all busy AND its task queue reaches full
 ### Why `DiscardOldestPolicy` is Perfect for Telemetry:
 1. **Data Freshness**: Current real-time metrics (CPU usage right NOW) are far more valuable than stale metrics from 20 minutes ago when the network was offline.
 2. **Bounded Memory Capping**: Keeps memory usage strictly capped at 500 items, preventing `OutOfMemoryError` during extended backend outages.
+
+---
+
+## 6. `@Order` Annotation & Exception Handler Precedence
+
+### Q: What is `@Order` in Spring, and why is `@Order(Ordered.HIGHEST_PRECEDENCE)` critical for exception handling in Spring Boot Starters?
+
+**Answer:**
+The `@Order` annotation (`org.springframework.core.annotation.Order`) defines the **execution priority** or precedence of Spring components, advice, filters, and bean implementations.
+
+In Spring, precedence follows a **numeric scale**:
+- **Lower numeric value = Higher priority** (`Ordered.HIGHEST_PRECEDENCE` = `Integer.MIN_VALUE` = `-2147483648`).
+- **Higher numeric value = Lower priority** (`Ordered.LOWEST_PRECEDENCE` = `Integer.MAX_VALUE` = `2147483647`).
+
+### Why It Is Crucial for Spring Boot Starters:
+When a shared SDK or library (like `nexus-spring-boot-starter`) provides a global `@RestControllerAdvice` or `@ControllerAdvice` to capture unhandled runtime exceptions and dispatch telemetry alerts:
+
+1. **The Conflict**: Both the starter SDK and the consuming client application (e.g. `Linkforge` microservice) may define `@ExceptionHandler(Exception.class)` or catch-all exception handlers.
+2. **Default Behavior**: Without `@Order`, Spring assigns `@RestControllerAdvice` beans a default order of `Ordered.LOWEST_PRECEDENCE`.
+3. **The Risk**: If the client application has its own catch-all `@RestControllerAdvice`, Spring's non-deterministic advice ordering might invoke the client's handler first. The client handler handles the exception, returns an HTTP response, and **prevents the starter SDK's handler from ever executing**.
+4. **The Consequence**: Telemetry alerts, error metrics, and incident logging in NEXUS AI are completely bypassed for unhandled application crashes!
+
+### The Solution:
+By explicitly annotating the starter's exception handler with `@Order(Ordered.HIGHEST_PRECEDENCE)`:
+
+```java
+@Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE) // 👈 Highest priority advice in Spring MVC chain!
+@RestControllerAdvice
+public class NexusExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
+        log.error("💥 [Nexus Starter] Exception in service [{}]: {}", properties.getServiceName(), ex.getMessage(), ex);
+
+        if (properties.isEnabled()) {
+            triggerNexusAlert(ex); // Guaranteed to capture & alert NEXUS Gateway
+        }
+
+        Map<String, Object> errorBody = Map.of(
+            "status", 500,
+            "error", "Internal Server Error",
+            "message", ex.getMessage() != null ? ex.getMessage() : "Unhandled runtime exception",
+            "service", properties.getServiceName(),
+            "timestamp", Instant.now().toString()
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
+    }
+}
+```
+
+### Precedence Hierarchy Summary:
+
+| Precedence Level | Constant Value | Usage Scenario |
+| :--- | :--- | :--- |
+| **`Ordered.HIGHEST_PRECEDENCE`** | `-2147483648` | **Starter / Framework exception handlers**, security filters, metric collection interceptors. |
+| **Numeric Value (e.g. `@Order(10)`)** | `10` | Specific custom filters/aspects requiring precise sequence relative to standard components. |
+| **`Ordered.LOWEST_PRECEDENCE`** *(Default)* | `2147483647` | Client application fallback handlers, standard controller advice without explicit ordering. |
+
