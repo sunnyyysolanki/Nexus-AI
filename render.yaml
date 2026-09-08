@@ -3,11 +3,11 @@
 
 services:
   # -------------------------------------------------------------
-  # 1. Apache Kafka (KRaft mode - Single container, no Zookeeper needed)
+  # 1. Apache Kafka (KRaft mode)
   # -------------------------------------------------------------
   - type: pserv
     name: nexus-kafka
-    runtime: image
+    env: image
     image:
       url: apache/kafka:latest
     envVars:
@@ -39,7 +39,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: nexus-kafka-ui
-    runtime: image
+    env: image
     image:
       url: provectuslabs/kafka-ui:latest
     envVars:
@@ -55,7 +55,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: log-service
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/log-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -66,18 +66,18 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: metric-service
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/metric-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
 
   # -------------------------------------------------------------
-  # 5. RCA Service Microservice (LLM + VectorDB Cache)
+  # 5. RCA Service Microservice
   # -------------------------------------------------------------
   - type: web
     name: rca-service
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/rca-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -88,7 +88,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: incident-service
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/incident-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -99,7 +99,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: alert-service
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/alert-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -110,7 +110,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: api-gateway
-    runtime: docker
+    env: docker
     dockerfilePath: backend/services/api-gateway/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -122,4 +122,3 @@ databases:
   # -------------------------------------------------------------
   - name: nexus-db
     databaseName: nexus_db
-    user: nexus_user
