@@ -1,7 +1,7 @@
 # Render Blueprint Specification for NEXUS AI Infrastructure
 # Docs: https://render.com/docs/blueprint-spec
 
-envGroups:
+envVarGroups:
   - name: cloud-kafka
     envVars:
       - key: KAFKA_SERVERS
@@ -141,9 +141,8 @@ services:
     runtime: docker
     rootDir: backend/services/rca-service
     dockerfilePath: Dockerfile
-    envGroups:
-      - cloud-kafka
     envVars:
+      - fromGroup: cloud-kafka
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: DB_HOST
@@ -176,9 +175,8 @@ services:
     runtime: docker
     rootDir: backend/services/incident-service
     dockerfilePath: Dockerfile
-    envGroups:
-      - cloud-kafka
     envVars:
+      - fromGroup: cloud-kafka
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: DB_HOST
