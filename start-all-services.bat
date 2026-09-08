@@ -1,0 +1,3 @@
+@echo off
+echo Starting all Nexus AI Microservices...
+powershell -ExecutionPolicy Bypass -File "%~dp0start-all-services.ps1"
