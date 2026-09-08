@@ -128,4 +128,4 @@ databases:
   # -------------------------------------------------------------
   - name: nexus-db
     databaseName: nexus_db
-    user: postgres
+    user: nexus_user
