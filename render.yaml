@@ -76,11 +76,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: database
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
           name: nexus-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: nexus-db
           property: password
@@ -109,11 +109,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: database
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
           name: nexus-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: nexus-db
           property: password
@@ -142,11 +142,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: database
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
           name: nexus-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: nexus-db
           property: password
@@ -175,11 +175,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: database
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
           name: nexus-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: nexus-db
           property: password
@@ -208,11 +208,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: database
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_USERNAME
         fromDatabase:
           name: nexus-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: nexus-db
           property: password

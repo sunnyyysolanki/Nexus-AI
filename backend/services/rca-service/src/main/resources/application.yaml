@@ -3,9 +3,9 @@ spring:
     name: rca-service
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:nexus_rca_db}}
-    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:postgres}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:Assassin@s4u}}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:nexus_rca_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Assassin@s4u}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
