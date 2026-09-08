@@ -112,6 +112,7 @@ public class RcaService {
                 .user(u -> u.text(userMessage)
                         .param("serviceName", incident.serviceName())
                         .param("alertName", incident.triggerAlert() != null ? incident.triggerAlert().alertName() : "")
+                        .param("alertMessage", incident.triggerAlert() != null && incident.triggerAlert().message() != null ? incident.triggerAlert().message() : "None")
                         .param("severity", incident.severity())
                         .param("logs", compactLogs)
                         .param("metrics", compactMetrics))
