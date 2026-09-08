@@ -135,7 +135,7 @@ public class RcaService {
         return rcaResponse;
     }
 
-    private RcaResponse checkVectorCache(String cacheQueryKey, Long incidentId) {
+    private RcaResponse checkVectorCache(String cacheQueryKey, String incidentId) {
         try {
             List<Document> matches = vectorStore.similaritySearch(
                     SearchRequest.builder()
