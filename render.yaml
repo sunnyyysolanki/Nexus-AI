@@ -3,9 +3,9 @@
 
 services:
   # -------------------------------------------------------------
-  # 1. Apache Kafka (KRaft mode)
+  # 1. Apache Kafka (Background Worker - No HTTP healthcheck required)
   # -------------------------------------------------------------
-  - type: web
+  - type: worker
     name: nexus-kafka
     plan: free
     runtime: image
