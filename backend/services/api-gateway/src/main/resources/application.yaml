@@ -13,9 +13,9 @@ spring:
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
-      server:
-        webflux:
-          routes:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      routes:
             # Route 1: Alert Ingestion -> alert-service (Port 8083)
             - id: alert-service-route
               uri: ${ALERT_SERVICE_URL:http://localhost:8083}
