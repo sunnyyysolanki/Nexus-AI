@@ -3,9 +3,9 @@ spring:
     name: metric-service
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/nexus_metric_db}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:Assassin@s4u}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:nexus_metric_db}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:Assassin@s4u}}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
