@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RcaService {
@@ -138,6 +141,7 @@ public class RcaService {
 
     private RcaResponse checkVectorCache(String cacheQueryKey, String incidentId) {
         try {
+            log.info("🔍 [Vector Cache] Searching for existing RCA match with threshold 0.88...");
             List<Document> matches = vectorStore.similaritySearch(
                     SearchRequest.builder()
                             .query(cacheQueryKey)
@@ -151,6 +155,7 @@ public class RcaService {
                 String cachedJson = (String) match.getMetadata().get("rca_response_json");
                 if (cachedJson != null) {
                     RcaResponse cached = objectMapper.readValue(cachedJson, RcaResponse.class);
+                    log.info("⚡ [Vector Cache HIT] Found matching RCA in VectorDB! Bypassing LLM generation.");
                     return new RcaResponse(
                             incidentId,
                             cached.rootCause(),
@@ -160,9 +165,11 @@ public class RcaService {
                             cached.recommendedActions()
                     );
                 }
+            } else {
+                log.info("💡 [Vector Cache MISS] No similar RCA found (>88% similarity). Proceeding to LLM generation...");
             }
         } catch (Exception e) {
-            // Ignore cache read failures silently to fall back to LLM
+            log.warn("⚠️ [Vector Cache] Cache lookup error: {}", e.getMessage());
         }
         return null;
     }
@@ -179,8 +186,9 @@ public class RcaService {
                     )
             );
             vectorStore.add(List.of(document));
+            log.info("💾 [Vector Cache] Successfully indexed newly generated RCA into VectorDB for future cache hits.");
         } catch (Exception e) {
-            // Ignore cache write failures silently
+            log.warn("⚠️ [Vector Cache] Failed to save RCA to VectorDB: {}", e.getMessage());
         }
     }
 }
