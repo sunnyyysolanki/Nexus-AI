@@ -7,7 +7,7 @@ services:
   # -------------------------------------------------------------
   - type: pserv
     name: nexus-kafka
-    env: image
+    runtime: image
     image:
       url: apache/kafka:latest
     envVars:
@@ -39,7 +39,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: nexus-kafka-ui
-    env: image
+    runtime: image
     image:
       url: provectuslabs/kafka-ui:latest
     envVars:
@@ -55,7 +55,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: log-service
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/log-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -66,7 +66,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: metric-service
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/metric-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -77,7 +77,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: rca-service
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/rca-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -88,7 +88,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: incident-service
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/incident-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -99,7 +99,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: alert-service
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/alert-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -110,7 +110,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: api-gateway
-    env: docker
+    runtime: docker
     dockerfilePath: backend/services/api-gateway/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
