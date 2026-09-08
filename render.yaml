@@ -5,8 +5,9 @@ services:
   # -------------------------------------------------------------
   # 1. Apache Kafka (KRaft mode)
   # -------------------------------------------------------------
-  - type: pserv
+  - type: web
     name: nexus-kafka
+    plan: free
     runtime: image
     image:
       url: apache/kafka:latest
@@ -39,6 +40,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: nexus-kafka-ui
+    plan: free
     runtime: image
     image:
       url: provectuslabs/kafka-ui:latest
@@ -55,6 +57,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: log-service
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/log-service/Dockerfile
     envVars:
@@ -66,6 +69,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: metric-service
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/metric-service/Dockerfile
     envVars:
@@ -77,6 +81,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: rca-service
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/rca-service/Dockerfile
     envVars:
@@ -88,6 +93,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: incident-service
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/incident-service/Dockerfile
     envVars:
@@ -99,6 +105,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: alert-service
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/alert-service/Dockerfile
     envVars:
@@ -110,6 +117,7 @@ services:
   # -------------------------------------------------------------
   - type: web
     name: api-gateway
+    plan: free
     runtime: docker
     dockerfilePath: backend/services/api-gateway/Dockerfile
     envVars:
@@ -122,3 +130,4 @@ databases:
   # -------------------------------------------------------------
   - name: nexus-db
     databaseName: nexus_db
+    plan: free
