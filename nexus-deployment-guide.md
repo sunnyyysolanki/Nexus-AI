@@ -164,3 +164,33 @@ Add the private repository definition to any microservice's `pom.xml`:
     </dependency>
 </dependencies>
 ```
+
+---
+
+### 🛑 Service Management Commands (Start, Stop, Restart)
+
+#### **Option 1: Using PowerShell (From Any Directory)**
+* **Stop Service**:
+  ```powershell
+  Stop-Service SonatypeNexusRepository
+  ```
+* **Start Service**:
+  ```powershell
+  Start-Service SonatypeNexusRepository
+  ```
+* **Check Status**:
+  ```powershell
+  Get-Service SonatypeNexusRepository
+  ```
+
+#### **Option 2: Using `nexus.exe` CLI**
+* **Directory**: `C:\Users\Admin\Downloads\nexus-3.90.1-01-win-x86_64\nexus-3.90.1-01\bin`
+* **Stop**:
+  ```powershell
+  .\nexus.exe stop SonatypeNexusRepository
+  ```
+* **Start**:
+  ```powershell
+  .\nexus.exe start SonatypeNexusRepository
+  ```
+
