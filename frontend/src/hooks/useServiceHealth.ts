@@ -13,7 +13,7 @@ export interface ServiceHealthStatus {
 const checkService = async (url: string): Promise<boolean> => {
   if (!url) return false;
   try {
-    const res = await axios.get(url, { timeout: 2500, validateStatus: () => true });
+    const res = await axios.get(url, { timeout: 30000, validateStatus: () => true });
     // Any HTTP response between 200 and 499 (including 405 Method Not Allowed or 404)
     // indicates that the backend process is running and actively responding to HTTP.
     return res.status >= 200 && res.status < 500;
