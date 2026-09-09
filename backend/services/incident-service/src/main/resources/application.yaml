@@ -22,6 +22,8 @@ spring:
       sasl.mechanism: ${KAFKA_SASL_MECHANISM:}
       sasl.jaas.config: ${KAFKA_JAAS_CONFIG:}
       ssl.endpoint.identification.algorithm: ${KAFKA_SSL_ENDPOINT_ALGORITHM:}
+      ssl.truststore.type: ${KAFKA_SSL_TRUSTSTORE_TYPE:PEM}
+      ssl.truststore.certificates: ${KAFKA_SSL_CA_CERT:}
       spring.json.trusted.packages: "com.nexus.*"
       spring.json.type.mapping: >
         RcaRequest:com.nexus.incident.dto.RcaRequest,

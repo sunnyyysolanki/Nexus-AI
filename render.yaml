@@ -12,6 +12,10 @@ envVarGroups:
         value: "SCRAM-SHA-256"
       - key: KAFKA_JAAS_CONFIG
         sync: false
+      - key: KAFKA_SSL_CA_CERT
+        sync: false
+      - key: KAFKA_SSL_ENDPOINT_ALGORITHM
+        value: "https"
 
 services:
   # # -------------------------------------------------------------
