@@ -8,16 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/rca")
 @RequiredArgsConstructor
 public class RcaController {
 
     private final RcaService rcaService;
 
+    // POST /api/v1/rca/generate — Direct HTTP trigger (used for manual testing)
     @PostMapping("/generate")
     public RcaResponse generateRca(@RequestBody RcaRequest rcaRequest) throws JsonProcessingException {
         return rcaService.generateRca(rcaRequest);
     }
-
 }

@@ -6,15 +6,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/alerts")
 @RequiredArgsConstructor
 public class AlertController {
@@ -23,17 +18,12 @@ public class AlertController {
 
     @PostMapping
     public ResponseEntity<String> receiveAlert(@Valid @RequestBody AlertPayload alert) {
-        log.info("🚨 [Alert Ingested] Service: {}, Alert: {}, Severity: {}", 
+        log.info("🚨 [Alert Ingested] Service: {}, Alert: {}, Severity: {}",
                 alert.serviceName(), alert.alertName(), alert.severity());
 
-        try {
-            incidentServiceClient.createIncident(alert);
-            log.info("✅ Created incident for alert: {}", alert.alertName());
-        } catch (Exception e) {
-            log.error("❌ Failed to notify incident-service: {}", e.getMessage(), e);
-            throw e;
-        }
+        incidentServiceClient.createIncident(alert);
+        log.info("✅ Incident created for alert: {}", alert.alertName());
 
-        return ResponseEntity.accepted().body("Alert ingested successfully. Incident created.");
+        return ResponseEntity.accepted().body("Alert ingested. Incident created.");
     }
 }

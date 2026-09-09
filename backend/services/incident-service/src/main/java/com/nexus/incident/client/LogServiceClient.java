@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.Instant;
 import java.util.List;
 
-@FeignClient(url = "http://localhost:8081/api/v1",name = "log-service")
+@FeignClient(name = "log-service", url = "${services.log-url}")
 public interface LogServiceClient {
 
-    @GetMapping("logs/search")
-    public List<LogEntry> searchLogs(@RequestParam String serviceName, @RequestParam Instant from, @RequestParam Instant to);
-
+    @GetMapping("/api/v1/logs/search")
+    List<LogEntry> searchLogs(
+            @RequestParam String serviceName,
+            @RequestParam Instant from,
+            @RequestParam Instant to);
 }
-
-

@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.Instant;
 import java.util.List;
 
-@FeignClient(url = "http://localhost:8082/api/v1",name = "metric-service")
+@FeignClient(name = "metric-service", url = "${services.metric-url}")
 public interface MetricServiceClient {
 
-    @GetMapping("/metrics/query")
-    public List<MetricDataPoint> searchLogs(@RequestParam String serviceName, @RequestParam Instant from, @RequestParam Instant to);
-
-
+    @GetMapping("/api/v1/metrics/query")
+    List<MetricDataPoint> queryMetrics(
+            @RequestParam String serviceName,
+            @RequestParam Instant from,
+            @RequestParam Instant to);
 }

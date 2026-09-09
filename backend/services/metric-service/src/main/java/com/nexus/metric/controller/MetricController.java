@@ -12,27 +12,26 @@ import java.time.Instant;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/metrics")
 @RequiredArgsConstructor
 public class MetricController {
 
     private final MetricService metricService;
 
+    // POST /api/v1/metrics — Ingest a metric data point
     @PostMapping
-    public ResponseEntity<MetricEntity> addMetrics(@RequestBody MetricDataPoint metricDataPoint) {
+    public ResponseEntity<MetricEntity> addMetric(@RequestBody MetricDataPoint metricDataPoint) {
         MetricEntity saved = metricService.saveMetric(metricDataPoint);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+    // GET /api/v1/metrics/query — Query metrics by service and time window
     @GetMapping("/query")
-    public ResponseEntity<List<MetricEntity>> getMetrics(
+    public ResponseEntity<List<MetricEntity>> queryMetrics(
             @RequestParam String serviceName,
             @RequestParam Instant from,
             @RequestParam Instant to) {
 
-        List<MetricEntity> metrics = metricService.queryMetrics(serviceName, from, to);
-        return ResponseEntity.ok(metrics);
+        return ResponseEntity.ok(metricService.queryMetrics(serviceName, from, to));
     }
-
 }

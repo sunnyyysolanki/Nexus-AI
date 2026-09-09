@@ -5,11 +5,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "http://localhost:8084/api/v1/incidents", name = "incident-service")
+@FeignClient(name = "incident-service", url = "${services.incident-url}")
 public interface IncidentServiceClient {
 
-    @PostMapping
-    String createIncident(@RequestBody AlertPayload alert) ;
-
-
+    @PostMapping("/api/v1/incidents")
+    String createIncident(@RequestBody AlertPayload alert);
 }

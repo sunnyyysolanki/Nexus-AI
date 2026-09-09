@@ -13,47 +13,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/incidents")
 @RequiredArgsConstructor
 public class IncidentController {
 
     private final IncidentService incidentService;
 
-    // POST: Create Incident
+    // POST /api/v1/incidents — Create incident from alert payload
     @PostMapping
-    public ResponseEntity<Incident> createIncident(@RequestBody AlertPayload alert) {
+    public ResponseEntity<Incident> createIncident(@Valid @RequestBody AlertPayload alert) {
         Incident created = incidentService.createIncidentFromAlert(alert);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // GET: List all incidents
+    // GET /api/v1/incidents — List all incidents
     @GetMapping
     public ResponseEntity<List<Incident>> getAllIncidents() {
         return ResponseEntity.ok(incidentService.getAllIncidents());
     }
 
-    // PUT /api/v1/incidents/{id}
+    // PUT /api/v1/incidents/{id} — Update status, root cause, resolution notes
     @PutMapping("/{id}")
     public ResponseEntity<Incident> updateIncident(
             @PathVariable String id,
             @Valid @RequestBody UpdateIncidentRequest request) {
-
-        Incident updated = incidentService.updateStatus(
-                id,
-                request.status(),
-                request.rootCauseSummary(),
-                request.resolutionNotes()
-        );
+        Incident updated = incidentService.updateStatus(id, request.status(), request.rootCauseSummary(), request.resolutionNotes());
         return ResponseEntity.ok(updated);
     }
 
-    // POST /api/v1/incidents/{id}/analyze -> Triggers AI RCA Analysis
+    // POST /api/v1/incidents/{id}/analyze — Trigger AI RCA manually
     @PostMapping("/{id}/analyze")
     public ResponseEntity<String> analyzeIncident(@PathVariable String id) {
-        String analyzed = incidentService.analyzeIncidentWithAI(id);
-        return ResponseEntity.ok(analyzed);
+        String result = incidentService.analyzeIncidentWithAI(id);
+        return ResponseEntity.ok(result);
     }
-
-
 }

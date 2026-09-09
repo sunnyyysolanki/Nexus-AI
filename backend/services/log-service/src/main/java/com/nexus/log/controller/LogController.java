@@ -13,21 +13,20 @@ import java.time.Instant;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/logs")
 @RequiredArgsConstructor
 public class LogController {
 
     private final LogService logService;
 
-    // POST /api/v1/logs -> Ingest log
+    // POST /api/v1/logs — Ingest a log entry
     @PostMapping
     public ResponseEntity<LogEntity> addLog(@RequestBody LogEntry logEntry) {
         LogEntity saved = logService.saveLog(logEntry);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    // GET /api/v1/logs/search -> Search logs for Incident Feign client
+    // GET /api/v1/logs/search — Search logs by service and time window
     @GetMapping("/search")
     public ResponseEntity<List<LogEntity>> searchLogs(
             @RequestParam String serviceName,
@@ -35,7 +34,6 @@ public class LogController {
             @RequestParam Instant to,
             @RequestParam(required = false) LogLevel level) {
 
-        List<LogEntity> logs = logService.searchLogs(serviceName, from, to, level);
-        return ResponseEntity.ok(logs);
+        return ResponseEntity.ok(logService.searchLogs(serviceName, from, to, level));
     }
 }
