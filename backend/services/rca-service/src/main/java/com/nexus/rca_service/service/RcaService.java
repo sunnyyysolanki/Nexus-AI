@@ -87,30 +87,12 @@ public class RcaService {
                 incident.severity(),
                 compactLogs);
 
-        // 2. Pre-LLM Check: Query VectorDB for high-similarity existing RCA (Saves 100% time & tokens on cache hit)
-        RcaResponse cachedRca = checkVectorCache(cacheQueryKey, incident.incidentId());
-        if (cachedRca != null) {
-            kafkaTemplate.send("rca-response", cachedRca);
-            return cachedRca;
-        }
+        // Temporarily bypassing Vector Cache due to Jina AI compatibility issues with Spring AI OpenAI parser
 
-        // 3. Fallback: LLM + RAG Generation
-        RetrievalAugmentationAdvisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor
-                .builder()
-                .documentRetriever(VectorStoreDocumentRetriever.builder()
-                        .vectorStore(vectorStore)
-                        .topK(2)
-                        .similarityThreshold(0.75)
-                        .build())
-                .documentJoiner(new ConcatenationDocumentJoiner())
-                .queryAugmenter(ContextualQueryAugmenter.builder().allowEmptyContext(true).build())
-                .build();
-                
-
+        // 3. Fallback: LLM Generation
         RcaResponse rawResponse = chatClient
                 .prompt()
                 .advisors(new SimpleLoggerAdvisor())
-                .advisors(retrievalAugmentationAdvisor)
                 .system(systemMessage)
                 .user(u -> u.text(userMessage)
                         .param("serviceName", incident.serviceName())
@@ -131,9 +113,6 @@ public class RcaService {
                 rawResponse.evidenceSummary(),
                 rawResponse.recommendedActions()
         );
-
-        // 4. Save newly generated RCA to VectorDB for future semantic cache hits
-        saveRcaToVectorStore(cacheQueryKey, rcaResponse, incident.serviceName());
 
         kafkaTemplate.send("rca-response", rcaResponse);
         return rcaResponse;
