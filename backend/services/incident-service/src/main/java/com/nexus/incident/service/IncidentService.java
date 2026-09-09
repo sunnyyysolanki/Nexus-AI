@@ -44,7 +44,11 @@ public class IncidentService {
         Incident saved = incidentRepository.saveAndFlush(incident);
         log.info("🔥 Incident created: id={}", saved.getId());
 
-        kafkaTemplate.send("analyze-with-ai", new IncidentCreatedEvent(saved.getId()));
+        try {
+            kafkaTemplate.send("analyze-with-ai", new IncidentCreatedEvent(saved.getId()));
+        } catch (Exception e) {
+            log.warn("⚠️ [incident-service] Kafka event publishing skipped (Kafka unavailable): {}", e.getMessage());
+        }
         return saved;
     }
 
@@ -137,7 +141,11 @@ public class IncidentService {
                 metrics
         );
 
-        kafkaTemplate.send("generate-rca", rcaRequest);
+        try {
+            kafkaTemplate.send("generate-rca", rcaRequest);
+        } catch (Exception e) {
+            log.warn("⚠️ [incident-service] Kafka generate-rca event skipped: {}", e.getMessage());
+        }
         return "AI analysis started for incident: " + incidentId;
     }
 
