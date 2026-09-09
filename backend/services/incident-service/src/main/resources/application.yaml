@@ -17,17 +17,16 @@ spring:
 
   kafka:
     bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
-    security:
-      protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
     properties:
+      security.protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+      sasl.mechanism: ${KAFKA_SASL_MECHANISM:}
+      sasl.jaas.config: ${KAFKA_JAAS_CONFIG:}
+      ssl.endpoint.identification.algorithm: ${KAFKA_SSL_ENDPOINT_ALGORITHM:}
       spring.json.trusted.packages: "com.nexus.*"
       spring.json.type.mapping: >
         RcaRequest:com.nexus.incident.dto.RcaRequest,
         RcaResponse:com.nexus.incident.dto.RcaResponse,
         IncidentCreatedEvent:com.nexus.incident.event.IncidentCreatedEvent
-      sasl.mechanism: ${KAFKA_SASL_MECHANISM:}
-      sasl.jaas.config: ${KAFKA_JAAS_CONFIG:}
-      ssl.endpoint.identification.algorithm: ${KAFKA_SSL_ENDPOINT_ALGORITHM:https}
     producer:
       acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
