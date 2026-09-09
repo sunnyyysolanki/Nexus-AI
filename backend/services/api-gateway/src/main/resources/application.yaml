@@ -38,28 +38,28 @@ spring:
         - id: alert-service-route
           uri: ${ALERT_SERVICE_URL:http://localhost:8083}
           predicates:
-            - Path=/api/v1/alerts,/api/v1/alerts/**
+            - Path=/api/v1/alerts/**
 
         # Route 2: Incident Management -> incident-service
         - id: incident-service-route
           uri: ${INCIDENT_SERVICE_URL:http://localhost:8084}
           predicates:
-            - Path=/api/v1/incidents,/api/v1/incidents/**
+            - Path=/api/v1/incidents/**
 
         # Route 3: Log Ingestion & Search -> log-service
         - id: log-service-route
           uri: ${LOG_SERVICE_URL:http://localhost:8081}
           predicates:
-            - Path=/api/v1/logs,/api/v1/logs/**
+            - Path=/api/v1/logs/**
 
         # Route 4: Metric Ingestion & Query -> metric-service
         - id: metric-service-route
           uri: ${METRIC_SERVICE_URL:http://localhost:8082}
           predicates:
-            - Path=/api/v1/metrics,/api/v1/metrics/**
+            - Path=/api/v1/metrics/**
 
         # Route 5: AI RCA Generation -> rca-service
         - id: rca-service-route
           uri: ${RCA_SERVICE_URL:http://localhost:8085}
           predicates:
-            - Path=/api/v1/rca,/api/v1/rca/**
+            - Path=/api/v1/rca/**
