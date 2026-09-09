@@ -4,6 +4,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.nexus.starter.appender.NexusLogbackAppender;
 import com.nexus.starter.exception.NexusExceptionHandler;
 import com.nexus.starter.publisher.NexusMetricsPublisher;
+import com.nexus.starter.security.GatewaySecretFilter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -26,6 +29,22 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableConfigurationProperties(NexusProperties.class)
 @ConditionalOnProperty(prefix = "nexus", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class NexusAutoConfiguration {
+
+    /**
+     * Registers the GatewaySecretFilter as the FIRST servlet filter in every service.
+     * Rejects any request that doesn't carry the X-Internal-Token header stamped by the gateway.
+     * Token value comes from: nexus.internal-token (set via INTERNAL_SERVICE_TOKEN env var)
+     */
+    @Bean
+    @ConditionalOnMissingBean(GatewaySecretFilter.class)
+    public FilterRegistrationBean<GatewaySecretFilter> gatewaySecretFilter(NexusProperties properties) {
+        log.info("🔒 [Nexus Starter] Registering GatewaySecretFilter for service: [{}]", properties.getServiceName());
+        FilterRegistrationBean<GatewaySecretFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new GatewaySecretFilter(properties));
+        registration.addUrlPatterns("/*");
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registration;
+    }
 
     @Bean(name = "nexusExecutor")
     @ConditionalOnMissingBean(name = "nexusExecutor")

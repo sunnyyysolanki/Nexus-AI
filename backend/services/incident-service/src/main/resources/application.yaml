@@ -45,3 +45,8 @@ server:
 services:
   log-url: ${LOG_SERVICE_URL:http://localhost:8081}
   metric-url: ${METRIC_SERVICE_URL:http://localhost:8082}
+
+# Nexus starter config
+nexus:
+  service-name: incident-service
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}

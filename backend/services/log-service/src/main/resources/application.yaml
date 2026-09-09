@@ -16,3 +16,8 @@ spring:
 
 server:
   port: ${PORT:8081}
+
+# Nexus starter config
+nexus:
+  service-name: log-service
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}

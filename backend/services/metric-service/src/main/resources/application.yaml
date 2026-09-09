@@ -16,3 +16,8 @@ spring:
 
 server:
   port: ${PORT:8082}
+
+# Nexus starter config
+nexus:
+  service-name: metric-service
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}

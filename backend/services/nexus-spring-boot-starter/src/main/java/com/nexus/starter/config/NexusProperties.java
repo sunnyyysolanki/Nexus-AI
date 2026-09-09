@@ -32,4 +32,15 @@ public class NexusProperties {
      * Default: 10000 (10 seconds)
      */
     private long metricsIntervalMs = 10000;
+
+    /**
+     * Shared secret token that the API Gateway stamps on every forwarded request
+     * via the X-Internal-Token header. Services reject any request missing this token.
+     *
+     * Set via environment variable: INTERNAL_SERVICE_TOKEN
+     * Must match nexus.gateway.internal-token on the gateway side.
+     *
+     * If left empty/null, gateway auth is disabled (warn-only). Safe for local dev.
+     */
+    private String internalToken = "";
 }

@@ -59,3 +59,8 @@ server:
 logging:
   level:
     org.springframework.ai.chat.client.advisor: DEBUG
+
+# Nexus starter config
+nexus:
+  service-name: rca-service
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}

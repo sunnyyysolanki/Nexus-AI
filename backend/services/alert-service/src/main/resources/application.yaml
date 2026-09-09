@@ -21,3 +21,8 @@ server:
 # Internal service URLs — set via environment variables in production
 services:
   incident-url: ${INCIDENT_SERVICE_URL:http://localhost:8084}
+
+# Nexus starter config
+nexus:
+  service-name: alert-service
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}

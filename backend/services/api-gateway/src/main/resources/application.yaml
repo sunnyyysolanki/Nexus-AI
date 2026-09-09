@@ -27,7 +27,11 @@ spring:
             maxAge: 3600
 
       default-filters:
+        # Strip duplicate CORS headers that downstream services might add
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+        # Stamp every forwarded request with the shared internal secret
+        # Services reject any request missing this header (direct bypass attempts get 403)
+        - AddRequestHeader=X-Internal-Token, ${INTERNAL_SERVICE_TOKEN:}
 
       routes:
         # Route 1: Alert Ingestion -> alert-service
