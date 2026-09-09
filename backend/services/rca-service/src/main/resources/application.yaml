@@ -52,7 +52,7 @@ spring:
     vectorstore:
       pgvector:
         initialize-schema: true
-        dimensions: 1536
+        dimensions: ${VECTOR_DIMENSIONS:1024}
         distance-type: COSINE_DISTANCE
         index-type: HNSW
 
