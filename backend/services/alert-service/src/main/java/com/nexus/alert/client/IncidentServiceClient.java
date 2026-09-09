@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface IncidentServiceClient {
 
     @PostMapping("/api/v1/incidents")
-    String createIncident(@RequestBody AlertPayload alert);
+    Object createIncident(@RequestBody AlertPayload alert);
 }
