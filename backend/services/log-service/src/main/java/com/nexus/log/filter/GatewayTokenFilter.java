@@ -42,8 +42,11 @@ public class GatewayTokenFilter extends OncePerRequestFilter {
         }
 
         String incomingToken = request.getHeader(TOKEN_HEADER);
-        if (!expectedToken.equals(incomingToken)) {
-            log.warn("🚫 [log-service] Blocked direct access: {} {} — invalid or missing X-Internal-Token",
+        String cleanExpected = expectedToken != null ? expectedToken.trim() : "";
+        String cleanIncoming = incomingToken != null ? incomingToken.trim() : "";
+
+        if (!cleanExpected.equals(cleanIncoming)) {
+            log.warn("🚫 [log-service] Blocked access: {} {} — invalid or missing X-Internal-Token",
                     request.getMethod(), request.getRequestURI());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.setContentType("application/json");
