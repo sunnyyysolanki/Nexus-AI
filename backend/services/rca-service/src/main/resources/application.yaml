@@ -45,8 +45,8 @@ spring:
         model: ${AI_MODEL:minicpm-v4.6}
         temperature: 0.2
       embedding:
-        base-url: ${AI_BASE_URL:http://localhost:11434/v1}
-        api-key: ${AI_API_KEY:ollama}
+        base-url: ${AI_EMBEDDING_BASE_URL:http://localhost:11434/v1}
+        api-key: ${AI_EMBEDDING_API_KEY:ollama}
         model: ${AI_EMBEDDING_MODEL:nomic-embed-text}
 
     vectorstore:
