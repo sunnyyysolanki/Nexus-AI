@@ -36,9 +36,9 @@ public class NexusLogbackAppender extends AppenderBase<ILoggingEvent> {
             return;
         }
 
-        // Prevent infinite recursive logging loops if restClient or appender emits logs
+        // Prevent infinite recursive logging loops from the telemetry components
         String loggerName = event.getLoggerName();
-        if (loggerName != null && loggerName.contains("com.nexus.starter")) {
+        if (loggerName != null && (loggerName.contains("com.nexus.starter.appender") || loggerName.contains("com.nexus.starter.publisher"))) {
             return;
         }
 
