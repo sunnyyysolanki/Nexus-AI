@@ -5,15 +5,6 @@ spring:
   application:
     name: api-gateway
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-  endpoint:
-    health:
-      show-details: always
-
   cloud:
     gateway:
       # CORS is handled here at the gateway — individual services must NOT set @CrossOrigin
@@ -72,3 +63,48 @@ management:
           uri: ${RCA_SERVICE_URL:http://localhost:8085}
           predicates:
             - Path=/api/v1/rca, /api/v1/rca/**
+
+        # Health check proxy routes — frontend calls these through gateway (avoids CORS issues)
+        - id: health-alert
+          uri: ${ALERT_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/health/alert
+          filters:
+            - RewritePath=/api/health/alert, /actuator/health
+
+        - id: health-incident
+          uri: ${INCIDENT_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/api/health/incident
+          filters:
+            - RewritePath=/api/health/incident, /actuator/health
+
+        - id: health-log
+          uri: ${LOG_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/health/log
+          filters:
+            - RewritePath=/api/health/log, /actuator/health
+
+        - id: health-metric
+          uri: ${METRIC_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/health/metric
+          filters:
+            - RewritePath=/api/health/metric, /actuator/health
+
+        - id: health-rca
+          uri: ${RCA_SERVICE_URL:http://localhost:8085}
+          predicates:
+            - Path=/api/health/rca
+          filters:
+            - RewritePath=/api/health/rca, /actuator/health
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

@@ -10,15 +10,18 @@ export interface ServiceHealthStatus {
   metricService: boolean;
 }
 
+const GATEWAY = import.meta.env.VITE_GATEWAY_URL || '';
+
 /**
- * Hits /actuator/health on each microservice directly.
+ * Checks service health by routing through the API Gateway.
+ * Gateway proxies /api/health/<service> -> <service>/actuator/health
+ * This avoids CORS issues since all calls go through the one gateway domain.
  * Returns true only if the service responds with { "status": "UP" }.
- * /actuator/health is publicly accessible — no X-Internal-Token required.
  */
-const checkHealth = async (baseUrl: string): Promise<boolean> => {
-  if (!baseUrl) return false;
+const checkHealth = async (path: string): Promise<boolean> => {
+  if (!GATEWAY) return false;
   try {
-    const res = await axios.get(`${baseUrl}/actuator/health`, {
+    const res = await axios.get(`${GATEWAY}${path}`, {
       timeout: 15000,
       validateStatus: () => true,
     });
@@ -33,12 +36,12 @@ export function useServiceHealth() {
     queryKey: ['serviceHealthStatus'],
     queryFn: async () => {
       const [gatewayOk, alertOk, incidentOk, rcaOk, logOk, metricOk] = await Promise.all([
-        checkHealth(import.meta.env.VITE_GATEWAY_URL || ''),
-        checkHealth(import.meta.env.VITE_ALERT_SERVICE_URL || ''),
-        checkHealth(import.meta.env.VITE_INCIDENT_SERVICE_URL || ''),
-        checkHealth(import.meta.env.VITE_RCA_SERVICE_URL || ''),
-        checkHealth(import.meta.env.VITE_LOG_SERVICE_URL || ''),
-        checkHealth(import.meta.env.VITE_METRIC_SERVICE_URL || ''),
+        checkHealth('/actuator/health'),          // gateway's own health
+        checkHealth('/api/health/alert'),
+        checkHealth('/api/health/incident'),
+        checkHealth('/api/health/rca'),
+        checkHealth('/api/health/log'),
+        checkHealth('/api/health/metric'),
       ]);
 
       return {
