@@ -2,15 +2,6 @@ spring:
   application:
     name: metric-service
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-  endpoint:
-    health:
-      show-details: always
-
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:nexus_metric_db}
     username: ${DB_USERNAME:postgres}
@@ -26,7 +17,16 @@ management:
 server:
   port: ${PORT:8082}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
 # Nexus starter config
 nexus:
   service-name: metric-service
-  internal-token: ${INTERNAL_SERVICE_TOKEN:}
+  internal-token: ${INTERNAL_SERVICE_TOKEN:}
