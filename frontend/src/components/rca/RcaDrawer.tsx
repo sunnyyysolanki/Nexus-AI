@@ -282,32 +282,6 @@ export const RcaDrawer: React.FC = () => {
                 )}
               </div>
 
-              {/* SERVICE DEPENDENCIES */}
-              <div className="p-6 border-b border-zinc-800">
-                <h3 className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2 mb-4">
-                  <Network className="w-3.5 h-3.5" />
-                  Impacted Topology
-                </h3>
-                <div className="font-mono text-xs text-zinc-400 bg-zinc-900 p-4 rounded-md border border-zinc-800">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-zinc-500">▼</span>
-                    <span>Gateway</span>
-                  </div>
-                  <div className="flex items-center gap-2 ml-4 mb-1">
-                    <span className="text-zinc-500">└─</span>
-                    <span className="text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded">{selectedIncident.serviceName}</span>
-                  </div>
-                  <div className="flex items-center gap-2 ml-8 mb-1">
-                    <span className="text-zinc-500">├──</span>
-                    <span>PostgreSQL Database</span>
-                  </div>
-                  <div className="flex items-center gap-2 ml-8">
-                    <span className="text-zinc-500">└──</span>
-                    <span>Redis Cache</span>
-                  </div>
-                </div>
-              </div>
-
               {/* RESOLUTION LOG */}
               <div className="p-6 border-b border-zinc-800 flex-1">
                 <h3 className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2 mb-4">
