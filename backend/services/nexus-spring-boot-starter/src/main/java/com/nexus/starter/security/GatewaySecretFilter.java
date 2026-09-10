@@ -43,8 +43,9 @@ public class GatewaySecretFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // Pass-through OPTIONS preflights — gateway handles CORS, not the service
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+        // Pass-through OPTIONS preflights and /actuator endpoints
+        String requestUri = request.getRequestURI();
+        if (HttpMethod.OPTIONS.matches(request.getMethod()) || (requestUri != null && requestUri.startsWith("/actuator"))) {
             filterChain.doFilter(request, response);
             return;
         }

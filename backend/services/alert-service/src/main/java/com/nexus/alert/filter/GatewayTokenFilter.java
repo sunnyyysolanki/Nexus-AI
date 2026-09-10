@@ -35,8 +35,9 @@ public class GatewayTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        // Let OPTIONS through — gateway handles CORS preflight
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+        // Let OPTIONS and /actuator health checks through
+        String requestUri = request.getRequestURI();
+        if (HttpMethod.OPTIONS.matches(request.getMethod()) || (requestUri != null && requestUri.startsWith("/actuator"))) {
             chain.doFilter(request, response);
             return;
         }

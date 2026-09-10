@@ -5,6 +5,15 @@ spring:
   application:
     name: api-gateway
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
   cloud:
     gateway:
       # CORS is handled here at the gateway — individual services must NOT set @CrossOrigin

@@ -30,7 +30,8 @@ public class GatewayTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+        String requestUri = request.getRequestURI();
+        if (HttpMethod.OPTIONS.matches(request.getMethod()) || (requestUri != null && requestUri.startsWith("/actuator"))) {
             chain.doFilter(request, response);
             return;
         }
