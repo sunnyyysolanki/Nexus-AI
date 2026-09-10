@@ -39,40 +39,40 @@ export const IncidentTable: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-7xl mx-auto">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-dark-border">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Incident Command Center</h2>
-          <p className="text-xs text-slate-400">High-density incident stream, status management, and AI analysis</p>
+          <h2 className="text-xl font-bold text-zinc-100 tracking-tight">Incident Command</h2>
+          <p className="text-xs text-zinc-500 mt-1">High-density stream, status management, and AI analysis</p>
         </div>
 
         <button
           onClick={() => refetch()}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-surface border border-dark-border text-xs text-slate-300 hover:text-white hover:border-slate-600 transition-all self-start sm:self-auto"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-dark-surface border border-dark-border text-xs text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800 transition-colors self-start sm:self-auto shadow-sm"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin text-indigo-400' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin text-zinc-400' : ''}`} />
           <span>Refresh Table</span>
         </button>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="p-3.5 rounded-xl glass-card border border-dark-border flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="p-3 rounded-md bg-dark-surface border border-dark-border flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm">
         {/* Search Bar */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" />
           <input
             type="text"
             placeholder="Search by title, service, ID..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-dark-bg border border-dark-border rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-dark-bg border border-dark-border rounded-md pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors"
           />
         </div>
 
         {/* Filter Dropdowns */}
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono shrink-0">
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium shrink-0">
             <Filter className="w-3.5 h-3.5" />
             <span>Filters:</span>
           </div>
@@ -81,7 +81,7 @@ export const IncidentTable: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-dark-bg border border-dark-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 font-sans focus:outline-none focus:border-indigo-500"
+            className="bg-dark-bg border border-dark-border rounded-md px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
           >
             <option value="ALL">All Statuses</option>
             <option value="OPEN">OPEN</option>
@@ -93,7 +93,7 @@ export const IncidentTable: React.FC = () => {
           <select
             value={severityFilter}
             onChange={(e) => setSeverityFilter(e.target.value)}
-            className="bg-dark-bg border border-dark-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 font-sans focus:outline-none focus:border-indigo-500"
+            className="bg-dark-bg border border-dark-border rounded-md px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
           >
             <option value="ALL">All Severities</option>
             <option value="CRITICAL">CRITICAL</option>
@@ -104,31 +104,31 @@ export const IncidentTable: React.FC = () => {
         </div>
       </div>
 
-      {/* High-Density Kafka-UI Data Table */}
-      <div className="rounded-xl glass-card border border-dark-border overflow-hidden">
+      {/* High-Density Data Table */}
+      <div className="rounded-lg bg-dark-surface border border-dark-border overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-dark-surface/90 text-[11px] font-mono uppercase text-slate-400 border-b border-dark-border">
+          <table className="w-full text-left text-xs text-zinc-300">
+            <thead className="bg-zinc-900/80 text-[11px] font-medium text-zinc-500 border-b border-dark-border">
               <tr>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Incident Title</th>
-                <th className="px-4 py-3">Service</th>
-                <th className="px-4 py-3">Severity</th>
-                <th className="px-4 py-3">AI RCA Score</th>
-                <th className="px-4 py-3">Created At</th>
-                <th className="px-4 py-3 text-right">Actions</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">Incident Title</th>
+                <th className="px-4 py-3 font-medium">Service</th>
+                <th className="px-4 py-3 font-medium">Severity</th>
+                <th className="px-4 py-3 font-medium">AI Score</th>
+                <th className="px-4 py-3 font-medium">Created At</th>
+                <th className="px-4 py-3 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-dark-border/60 font-sans">
+            <tbody className="divide-y divide-dark-border">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-slate-400 font-mono">
+                  <td colSpan={7} className="px-4 py-12 text-center text-zinc-500">
                     Fetching incidents from API...
                   </td>
                 </tr>
               ) : filteredIncidents.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-slate-500">
+                  <td colSpan={7} className="px-4 py-12 text-center text-zinc-500">
                     No matching incidents found.
                   </td>
                 </tr>
@@ -144,60 +144,60 @@ export const IncidentTable: React.FC = () => {
                         setSelectedIncident(incident);
                         setRcaDrawerOpen(true);
                       }}
-                      className="hover:bg-dark-hover/80 transition-colors cursor-pointer group"
+                      className="hover:bg-zinc-800/40 transition-colors cursor-pointer group"
                     >
                       {/* Status */}
-                      <td className="px-4 py-3.5 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <StatusBadge status={incident.status} size="sm" />
                       </td>
 
                       {/* Title & ID */}
-                      <td className="px-4 py-3.5">
-                        <div className="font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors line-clamp-1">
+                      <td className="px-4 py-3">
+                        <div className="font-medium text-zinc-100 group-hover:text-zinc-300 transition-colors line-clamp-1">
                           {incident.title}
                         </div>
-                        <div className="text-[10px] font-mono text-slate-500">ID: {incident.id}</div>
+                        <div className="text-[10px] font-mono text-zinc-500 mt-0.5">ID: {incident.id}</div>
                       </td>
 
                       {/* Service */}
-                      <td className="px-4 py-3.5 whitespace-nowrap font-mono text-indigo-400">
+                      <td className="px-4 py-3 whitespace-nowrap font-mono text-zinc-400">
                         {incident.serviceName}
                       </td>
 
                       {/* Severity */}
-                      <td className="px-4 py-3.5 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <SeverityBadge severity={incident.severity} />
                       </td>
 
                       {/* AI RCA Score */}
-                      <td className="px-4 py-3.5 whitespace-nowrap font-mono">
+                      <td className="px-4 py-3 whitespace-nowrap font-mono">
                         {hasRca ? (
-                          <span className="inline-flex items-center gap-1 text-purple-400 bg-purple-950/40 px-2 py-0.5 rounded border border-purple-800/40 text-[11px]">
-                            <Sparkles className="w-3 h-3 text-purple-400" />
+                          <span className="inline-flex items-center gap-1.5 text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded-sm border border-zinc-700 text-[11px]">
+                            <Sparkles className="w-3 h-3 text-zinc-400" />
                             {incident.confidenceScore}%
                           </span>
                         ) : (
-                          <span className="text-slate-500 text-[11px]">Not Analyzed</span>
+                          <span className="text-zinc-600 text-[11px]">N/A</span>
                         )}
                       </td>
 
                       {/* Created At */}
-                      <td className="px-4 py-3.5 whitespace-nowrap font-mono text-[11px] text-slate-400">
+                      <td className="px-4 py-3 whitespace-nowrap font-mono text-[11px] text-zinc-500">
                         {new Date(incident.createdAt).toLocaleString()}
                       </td>
 
                       {/* Actions */}
-                      <td className="px-4 py-3.5 whitespace-nowrap text-right">
-                        <div className="flex items-center justify-end gap-1.5">
+                      <td className="px-4 py-3 whitespace-nowrap text-right">
+                        <div className="flex items-center justify-end gap-2">
                           {/* Trigger AI RCA Button */}
                           <button
                             onClick={(e) => handleTriggerAnalysis(e, incident.id)}
                             disabled={isCurrentAnalyzing}
-                            className="p-1.5 rounded-lg bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 border border-purple-700/50 text-[11px] font-medium transition-all flex items-center gap-1 disabled:opacity-50"
+                            className="px-2 py-1 rounded border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 hover:text-zinc-100 text-zinc-300 text-[11px] font-medium transition-colors flex items-center gap-1.5 disabled:opacity-50"
                             title="Trigger AI Root Cause Analysis"
                           >
                             <Sparkles className={`w-3.5 h-3.5 ${isCurrentAnalyzing ? 'animate-spin' : ''}`} />
-                            <span className="hidden xl:inline">{isCurrentAnalyzing ? 'Analyzing...' : 'AI RCA'}</span>
+                            <span className="hidden xl:inline">{isCurrentAnalyzing ? 'Analyzing' : 'AI RCA'}</span>
                           </button>
 
                           {/* Edit Status Button */}
@@ -206,10 +206,10 @@ export const IncidentTable: React.FC = () => {
                               e.stopPropagation();
                               openEditModal(incident);
                             }}
-                            className="p-1.5 rounded-lg bg-dark-bg hover:bg-slate-800 text-slate-300 border border-dark-border text-[11px] font-medium transition-all flex items-center gap-1"
+                            className="p-1.5 rounded bg-transparent hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors flex items-center gap-1"
                             title="Edit Status & Resolution Notes"
                           >
-                            <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                            <Edit3 className="w-3.5 h-3.5" />
                           </button>
 
                           {/* View RCA Drawer Button */}
@@ -219,10 +219,10 @@ export const IncidentTable: React.FC = () => {
                               setSelectedIncident(incident);
                               setRcaDrawerOpen(true);
                             }}
-                            className="p-1.5 rounded-lg bg-dark-bg hover:bg-slate-800 text-slate-300 border border-dark-border text-[11px] font-medium transition-all flex items-center gap-1"
+                            className="p-1.5 rounded bg-transparent hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors flex items-center gap-1"
                             title="View Incident Details"
                           >
-                            <Eye className="w-3.5 h-3.5 text-indigo-400" />
+                            <Eye className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </td>

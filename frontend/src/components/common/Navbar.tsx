@@ -13,58 +13,56 @@ export const Navbar: React.FC = () => {
   const isGatewayUp = health?.gateway;
 
   return (
-    <header className="sticky top-0 z-40 bg-dark-surface/90 backdrop-blur-md border-b border-dark-border px-6 py-3.5 flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-dark-bg border-b border-dark-border px-5 py-3 flex items-center justify-between">
       {/* Brand & System Status */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-0.5 shadow-glow-indigo flex items-center justify-center">
-            <div className="h-full w-full bg-dark-bg rounded-[10px] flex items-center justify-center">
-              <Zap className="w-5 h-5 text-indigo-400 fill-indigo-400/20" />
-            </div>
+          <div className="h-8 w-8 rounded-md border border-zinc-700 bg-zinc-800 flex items-center justify-center">
+            <Zap className="w-4 h-4 text-zinc-300" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg text-white tracking-tight font-sans">
-                NEXUS<span className="text-indigo-400 font-normal ml-1">AI</span>
+              <h1 className="font-bold text-sm text-zinc-100 tracking-tight">
+                NEXUS<span className="text-zinc-400 font-medium ml-0.5">AI</span>
               </h1>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-indigo-950/80 text-indigo-300 border border-indigo-800/60">
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-medium bg-zinc-800 text-zinc-400 border border-zinc-700">
                 v1.0.0
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium">Autonomous Observability & RCA Engine</p>
+            <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-widest mt-0.5">Observability Engine</p>
           </div>
         </div>
 
         {/* Dynamic Gateway Connection Badge */}
-        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-bg border border-dark-border text-xs text-slate-300">
-          <span className="relative flex h-2 w-2">
+        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded bg-zinc-900 border border-dark-border text-xs text-zinc-400 ml-4">
+          <span className="relative flex h-1.5 w-1.5">
             <span
               className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                 isGatewayUp ? 'bg-emerald-400' : 'bg-rose-400'
               }`}
             />
             <span
-              className={`relative inline-flex rounded-full h-2 w-2 ${
+              className={`relative inline-flex rounded-full h-1.5 w-1.5 ${
                 isGatewayUp ? 'bg-emerald-500' : 'bg-rose-500'
               }`}
             />
           </span>
-          <span className="font-mono text-slate-400">Gateway Port:</span>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">Gateway:</span>
           {isHealthLoading ? (
-            <span className="font-semibold text-amber-400 animate-pulse font-mono">8080 Checking...</span>
+            <span className="font-medium text-amber-500 font-mono text-[10px]">Checking</span>
           ) : isGatewayUp ? (
-            <span className="font-semibold text-emerald-400 font-mono">8080 Active</span>
+            <span className="font-medium text-emerald-500 font-mono text-[10px]">8080</span>
           ) : (
-            <span className="font-semibold text-rose-400 font-mono">8080 Offline</span>
+            <span className="font-medium text-rose-500 font-mono text-[10px]">Offline</span>
           )}
         </div>
       </div>
 
       {/* Action Controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
         {/* Open Incidents Pill Alert */}
         {openIncidentsCount > 0 && (
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold animate-pulse">
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-medium">
             <Activity className="w-3.5 h-3.5" />
             <span>{openIncidentsCount} Open Incidents</span>
           </div>
@@ -73,32 +71,34 @@ export const Navbar: React.FC = () => {
         {/* Auto Refresh Toggle */}
         <button
           onClick={toggleAutoRefresh}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs font-medium transition-colors ${
             autoRefresh
-              ? 'bg-indigo-950/50 border-indigo-700/60 text-indigo-300'
-              : 'bg-dark-bg border-dark-border text-slate-400'
+              ? 'bg-zinc-800 border-zinc-700 text-zinc-200'
+              : 'bg-transparent border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900'
           }`}
           title="Toggle 5s live polling"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin text-indigo-400' : ''}`} />
-          <span>{autoRefresh ? 'Live Polling ON' : 'Polling Paused'}</span>
+          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin text-zinc-400' : ''}`} />
+          <span>{autoRefresh ? 'Live' : 'Paused'}</span>
         </button>
 
         {/* Manual Refresh Button */}
         <button
           onClick={() => refetch()}
-          className="p-2 rounded-lg bg-dark-bg border border-dark-border text-slate-300 hover:text-white hover:border-slate-600 transition-all"
+          className="p-1.5 rounded-md bg-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 transition-colors"
           title="Manual Refresh"
         >
-          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
         </button>
+
+        <div className="w-px h-4 bg-zinc-800 mx-1"></div>
 
         {/* Ingest Alert Trigger Button */}
         <button
           onClick={() => setAlertModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-medium text-xs shadow-glow-rose transition-all transform active:scale-95"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-white text-zinc-900 font-semibold text-xs transition-colors focus:ring-2 focus:ring-zinc-400 focus:outline-none"
         >
-          <BellPlus className="w-4 h-4" />
+          <BellPlus className="w-3.5 h-3.5" />
           <span>Simulate Alert</span>
         </button>
       </div>

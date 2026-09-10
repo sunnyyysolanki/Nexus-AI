@@ -12,27 +12,27 @@ export const ToastContainer: React.FC = () => {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`flex items-start gap-3 p-4 rounded-xl border glass-card shadow-2xl transition-all duration-300 animate-in slide-in-from-bottom-5 ${
+          className={`flex items-start gap-3 p-4 rounded-md border shadow-md transition-all duration-300 animate-in slide-in-from-bottom-5 ${
             toast.type === 'success'
-              ? 'border-emerald-500/30 text-emerald-300 bg-emerald-950/40'
+              ? 'border-emerald-500/20 text-emerald-400 bg-zinc-950'
               : toast.type === 'error'
-              ? 'border-rose-500/30 text-rose-300 bg-rose-950/40'
+              ? 'border-rose-500/20 text-rose-400 bg-zinc-950'
               : toast.type === 'warning'
-              ? 'border-amber-500/30 text-amber-300 bg-amber-950/40'
-              : 'border-indigo-500/30 text-indigo-300 bg-indigo-950/40'
+              ? 'border-amber-500/20 text-amber-400 bg-zinc-950'
+              : 'border-zinc-800 text-zinc-100 bg-zinc-950'
           }`}
         >
           <div className="mt-0.5 shrink-0">
-            {toast.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
-            {toast.type === 'error' && <XCircle className="w-5 h-5 text-rose-400" />}
-            {toast.type === 'warning' && <AlertTriangle className="w-5 h-5 text-amber-400" />}
-            {toast.type === 'info' && <Info className="w-5 h-5 text-indigo-400" />}
+            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+            {toast.type === 'error' && <XCircle className="w-4 h-4 text-rose-500" />}
+            {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-500" />}
+            {toast.type === 'info' && <Info className="w-4 h-4 text-zinc-500" />}
           </div>
 
           <div className="flex-1">
-            <h4 className="font-semibold text-sm leading-snug">{toast.title}</h4>
+            <h4 className="font-semibold text-xs leading-snug">{toast.title}</h4>
             {toast.message && (
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed opacity-90 break-words">
+              <p className="text-[11px] text-zinc-400 mt-1 leading-relaxed break-words">
                 {toast.message}
               </p>
             )}
@@ -40,7 +40,7 @@ export const ToastContainer: React.FC = () => {
 
           <button
             onClick={() => removeToast(toast.id)}
-            className="text-slate-400 hover:text-white p-1 rounded-md transition-colors"
+            className="text-zinc-500 hover:text-zinc-300 p-1 rounded transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
