@@ -56,6 +56,12 @@ spring:
         distance-type: COSINE_DISTANCE
         index-type: HNSW
 
+
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+
 server:
   port: ${PORT:8085}
 

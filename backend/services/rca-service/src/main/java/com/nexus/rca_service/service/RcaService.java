@@ -14,6 +14,7 @@ import org.springframework.ai.rag.preretrieval.query.expansion.MultiQueryExpande
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.join.ConcatenationDocumentJoiner;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -40,6 +41,7 @@ public class RcaService {
     private final ObjectMapper objectMapper;
     private final VectorStore vectorStore;
     private final KafkaTemplate<Object, Object> kafkaTemplate;
+    private final ToolCallbackProvider toolCallbackProvider;
 
     @Value("classpath:/prompts/system.st")
     private Resource systemMessage;
@@ -108,8 +110,11 @@ public class RcaService {
                 .build();
         */
 
+
+
         RcaResponse rawResponse = chatClient
                 .prompt()
+                .tools(toolCallbackProvider)
                 .advisors(new SimpleLoggerAdvisor())
                 // .advisors(retrievalAugmentationAdvisor)
                 .system(systemMessage)
